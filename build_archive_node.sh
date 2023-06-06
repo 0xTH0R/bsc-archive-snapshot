@@ -267,10 +267,10 @@ function prepare_zfs_datasets() {
 
 function download_snapshots() {
   set -euxo pipefail
-  if ! zfs list tank/erigon_data/bsc/snapshots ; then
-    # Setup zfs dataset and download the latest erigon snapshots into it if needed.
-    zfs create -o mountpoint=/erigon/data/bsc/snapshots tank/erigon_data/bsc/snapshots
-  fi
+  # if ! zfs list tank/erigon_data/bsc/snapshots ; then
+  #   # Setup zfs dataset and download the latest erigon snapshots into it if needed.
+  #   zfs create -o mountpoint=/erigon/data/bsc/snapshots tank/erigon_data/bsc/snapshots
+  # fi
   mkdir -p /erigon/data/bsc/snapshots/
 
   parallel_sync_download s3://public-blockchain-snapshots/bsc/erigon/archive/latest/v1/snapshots/ /erigon/data/bsc/snapshots/
@@ -283,9 +283,9 @@ function download_snapshots() {
 # This is not strictly required, but it will make it much faster for a node to join the pool.
 function download_nodes() {
   set -euxo pipefail
-  if ! zfs list tank/erigon_data/bsc/nodes ; then
-    zfs create -o mountpoint=/erigon/data/bsc/nodes tank/erigon_data/bsc/nodes
-  fi
+  # if ! zfs list tank/erigon_data/bsc/nodes ; then
+  #   zfs create -o mountpoint=/erigon/data/bsc/nodes tank/erigon_data/bsc/nodes
+  # fi
 
   # This command is allowed to fail.
   parallel_sync_download s3://public-blockchain-snapshots/bsc/erigon/archive/latest/v1/nodes/ /erigon/data/bsc/nodes/nodes/ || true
@@ -297,9 +297,9 @@ function download_nodes() {
 # a few hours).
 function download_parlia() {
   set -euxo pipefail
-  if ! zfs list tank/erigon_data/bsc/parlia ; then
-    zfs create -o mountpoint=/erigon/data/bsc/parlia tank/erigon_data/bsc/parlia
-  fi
+  # if ! zfs list tank/erigon_data/bsc/parlia ; then
+  #   zfs create -o mountpoint=/erigon/data/bsc/parlia tank/erigon_data/bsc/parlia
+  # fi
   parallel_sync_download s3://public-blockchain-snapshots/bsc/erigon/archive/latest/v1/parlia/ /erigon/data/bsc/parlia/ || true
 }
 
@@ -312,9 +312,9 @@ function download_parlia() {
 #    about 3-4x faster than using normal `aws s3 cp` + `zstd -d`.
 function download_database_file() {
   set -euxo pipefail
-  if ! zfs list tank/erigon_data/bsc/chaindata ; then
-    zfs create -o mountpoint=/erigon/data/bsc/chaindata tank/erigon_data/bsc/chaindata
-  fi
+  # if ! zfs list tank/erigon_data/bsc/chaindata ; then
+  #   zfs create -o mountpoint=/erigon/data/bsc/chaindata tank/erigon_data/bsc/chaindata
+  # fi
 
   # Remove the file if it exists.
   rm -rf /erigon/data/bsc/chaindata/mdbx.dat || true
@@ -558,8 +558,8 @@ if [[ "${CREATE_SNAPSHOT_MODE:-}" == "1" ]]; then
   exit
 fi
 
-setup_drives
-prepare_zfs_datasets
+# setup_drives
+# prepare_zfs_datasets
 
 download_snapshots & # Download just the snapshots folder.
 download_nodes & # Downloads the last known list of nodes.
@@ -569,4 +569,4 @@ safe_wait # Wait for download_snapshot to finish.
 
 prepare_erigon
 run_erigon
-add_create_snapshot_script
+# add_create_snapshot_script
