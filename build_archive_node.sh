@@ -250,7 +250,8 @@ function install_erigon() {
   git clone https://github.com/ledgerwatch/erigon.git
   cd /erigon/erigon
   git checkout v2.32.0
-  CC=clang-12 CXX=clang++-12 CFLAGS="-O3" make erigon
+  # CC=clang-12 CXX=clang++-12 CFLAGS="-O3" make erigon
+  PATH=/home/erigon/go/go/bin:$PATH CC=clang-12 CXX=clang++-12 CFLAGS="-O3" make erigon
   ln -s /erigon/erigon/build/bin/erigon /usr/bin/erigon
 
   # Stop the service if it exists.
