@@ -57,10 +57,10 @@ fi
 # Make sure you launch the instance with the EC2 tag attached to the instance of:
 # `no-launch` set to something and the `Allow tags in metadata` flag checked.
 cat <<EOF > /dev/null
-sudo sh -c 'curl https://raw.githubusercontent.com/allada/bsc-archive-snapshot/master/build_archive_node.sh > /home/ubuntu/build_archive_node.sh'
-sudo sh -c "echo \"@reboot root sh -c 'curl --fail http://169.254.169.254/latest/meta-data/tags/instance/no-launch || SHOULD_AUTO_UPLOAD_SNAPSHOT=1 /home/ubuntu/build_archive_node.sh || shutdown +5 now'\" >> /etc/crontab"
-sudo chmod +x /home/ubuntu/build_archive_node.sh
-sudo CREATE_SNAPSHOT_MODE=1 /home/ubuntu/build_archive_node.sh
+sudo sh -c 'curl https://raw.githubusercontent.com/allada/bsc-archive-snapshot/master/build_archive_node.sh > /home/erigon/build_archive_node.sh'
+sudo sh -c "echo \"@reboot root sh -c 'curl --fail http://169.254.169.254/latest/meta-data/tags/instance/no-launch || SHOULD_AUTO_UPLOAD_SNAPSHOT=1 /home/erigon/build_archive_node.sh || shutdown +5 now'\" >> /etc/crontab"
+sudo chmod +x /home/erigon/build_archive_node.sh
+sudo CREATE_SNAPSHOT_MODE=1 /home/erigon/build_archive_node.sh
 EOF
 
 function safe_wait() {
